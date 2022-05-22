@@ -1,10 +1,13 @@
 import React, { useRef, useState, useCallback } from "react";
+import { useRouter } from "next/router";
 
 import type { NextPage } from "next";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { MessageDataInterface } from "types/MessageData";
 
 import { Form } from "@unform/web";
+
+import { useAuth } from "../hooks/useAuth";
 
 import { Alert } from "components/Alert";
 import { Input } from "components/Input";
@@ -16,14 +19,16 @@ import { colorOptions } from "utils/colors";
 import api from "services/api";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const { user, signInWithTwitter } = useAuth();
   const formRef = useRef<FormHandles>(null);
   const [bg, setBg] = useState("bg-blue-400");
 
   const handleSignIn = async () => {
-    // if (!user) {
-    // await signInWithTwitter();
-    // }
-    // navigate("/my-messages", { replace: true });
+    if (!user) {
+      await signInWithTwitter();
+    }
+    router.push("/my-messages", undefined);
   };
 
   const onChangeRadio = useCallback(
@@ -140,6 +145,7 @@ const Home: NextPage = () => {
               />
 
               <button
+                type="submit"
                 className={`
                 ${bg}
                 font-semibold
@@ -154,14 +160,13 @@ const Home: NextPage = () => {
               >
                 enviar! 📨
               </button>
-
-              <button
-                className="block mt-4 outline-none dark:text-gray-300 text-gray-700 underline"
-                onClick={handleSignIn}
-              >
-                clique aqui para checar suas mensagens com o twitter!
-              </button>
             </Form>
+            <button
+              className="mx-auto block mt-4 outline-none dark:text-gray-300 text-gray-700 underline"
+              onClick={handleSignIn}
+            >
+              clique aqui para checar suas mensagens com o twitter!
+            </button>
           </div>
         </div>
 
