@@ -13,6 +13,8 @@ import { Textarea } from "components/Textarea";
 
 import { colorOptions } from "utils/colors";
 
+import api from "services/api";
+
 const Home: NextPage = () => {
   const formRef = useRef<FormHandles>(null);
   const [bg, setBg] = useState("bg-blue-400");
@@ -34,27 +36,32 @@ const Home: NextPage = () => {
     []
   );
 
-  const handleFormSubmit = useCallback<SubmitHandler<MessageDataInterface>>(
-    (data) => {
-      if (!data.user) {
-        alert("Preencha o campo nome corretamente!");
-        return;
-      }
-      if (!data.message || data.message.length < 3) {
-        alert("Escreva uma mensagem com no mínimo 3 caracteres!");
-        return;
-      }
-
-      if (data.user.length > 50 || data.message.length > 800) {
-        alert("Sua mensagem foi rejeitada!");
-        return;
-      }
-
-      alert("Mensagem enviada com sucesso! ❤");
+  const handleFormSubmit = async (data: MessageDataInterface) => {
+    if (!data.user) {
+      alert("Preencha o campo nome corretamente!");
       return;
-    },
-    []
-  );
+    }
+    if (!data.message || data.message.length < 3) {
+      alert("Escreva uma mensagem com no mínimo 3 caracteres!");
+      return;
+    }
+
+    if (data.user.length > 50 || data.message.length > 800) {
+      alert("Sua mensagem foi rejeitada!");
+      return;
+    }
+
+    const request = await api.post("sendMessage", {
+      user: data.user,
+      message: data.message,
+      color: bg,
+    });
+
+    if (request.status == 200) {
+      alert("Mensagem enviada com sucesso! ❤");
+    } else alert("Houve um erro. Confira os dados enviados.");
+    return;
+  };
 
   const handlePix = useCallback(async () => {
     await navigator.clipboard.writeText(`e8949c0d-7327-45cb-8359-efe3d73ae8ff`);

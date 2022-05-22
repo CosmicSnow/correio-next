@@ -26,10 +26,10 @@ const colorOptions = [
 ];
 
 enum colorEnum {
-  "bg-blue-200",
-  "bg-green-200",
-  "bg-pink-200",
-  "bg-purple-200",
+  "bg-blue-400",
+  "bg-green-400",
+  "bg-pink-400",
+  "bg-purple-400",
 }
 
 export { colorEnum, colorOptions };
