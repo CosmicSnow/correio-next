@@ -1,0 +1,17 @@
+config:
+  target: "http://localhost:1073"
+  processor: "./functions.js"
+  phases:
+    - duration: 15
+      arrivalRate: 1
+
+scenarios:
+  - name: "Send message"
+    flow:
+      - post:
+          url: "/api/sendMessage"
+          beforeRequest: returnRandomTwitterUsername
+          json:
+            user: { { user } }
+            message: { { message } }
+            color: { { color } }
