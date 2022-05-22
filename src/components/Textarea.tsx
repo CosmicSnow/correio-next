@@ -5,7 +5,11 @@ interface TextareaProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
 }
 
-const Textarea: React.FC<TextareaProps> = ({ name }) => {
+const Textarea: React.FC<TextareaProps> = ({
+  name,
+  className,
+  placeholder,
+}) => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { fieldName, defaultValue, registerField } = useField(name);
 
@@ -25,7 +29,15 @@ const Textarea: React.FC<TextareaProps> = ({ name }) => {
     });
   }, [fieldName, registerField]);
 
-  return <textarea name={name} ref={inputRef} defaultValue={defaultValue} />;
+  return (
+    <textarea
+      name={name}
+      ref={inputRef}
+      className={className}
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+    />
+  );
 };
 
 export { Textarea };

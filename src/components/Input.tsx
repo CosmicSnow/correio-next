@@ -5,7 +5,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
 }
 
-const Input: React.FC<InputProps> = ({ name, type }) => {
+const Input: React.FC<InputProps> = ({
+  name,
+  type,
+  className,
+  placeholder,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { fieldName, defaultValue, registerField } = useField(name);
 
@@ -26,7 +31,14 @@ const Input: React.FC<InputProps> = ({ name, type }) => {
   }, [fieldName, registerField]);
 
   return (
-    <input name={name} ref={inputRef} defaultValue={defaultValue} type={type} />
+    <input
+      name={name}
+      ref={inputRef}
+      className={className}
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      type={type}
+    />
   );
 };
 

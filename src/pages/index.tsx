@@ -11,7 +11,7 @@ import { Input } from "components/Input";
 import { Radio } from "components/Radio";
 import { Textarea } from "components/Textarea";
 
-import colorOptions from "utils/colors";
+import { colorOptions } from "utils/colors";
 
 const Home: NextPage = () => {
   const formRef = useRef<FormHandles>(null);
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
         return;
       }
       if (!data.message || data.message.length < 3) {
-        alert("Escreva uma mensagem!");
+        alert("Escreva uma mensagem com no mínimo 3 caracteres!");
         return;
       }
 
@@ -62,49 +62,54 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="max-w-screen-xl mx-auto dark:bg-gray-900 dark:text-gray-300">
+    <div className="dark:bg-gray-900 dark:text-gray-300">
       <div className="w-full flex flex-col items-center px-4 pt-8 pb-16 sm:py-16">
-        <h1 className="mt-8 p-4 text-3xl md:text-5xl dark:text-gray-300 text-gray-700 font-bold ">
-          📮 correio anônimo
-        </h1>
-        <p className="mt-3 sm:mt-6 max-w-3xl md:text-2xl text-gray-500 dark:text-gray-300">
-          envie e receba recados escritos anônimamente por pessoas ao redor do
-          mundo usando apenas seu twitter.
-        </p>
+        <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row items-center justify-around gap-x-8">
+          <div className="text-center lg:text-left md:text-xl text-gray-500 dark:text-gray-300">
+            <h1 className="text-2xl md:text-4xl dark:text-gray-300 text-gray-700 font-bold ">
+              📮 correio anônimo
+            </h1>
+            <p className="mt-3 sm:mt-6 max-w-2xl">
+              envie e receba recados escritos anônimamente por pessoas ao redor
+              do mundo usando apenas seu twitter.
+            </p>
+            <p className="mt-3 sm:mt-6 max-w-2xl">
+              já ajudamos mais de 9 mil pessoas a enviar cartas de carinho!
+            </p>
 
-        <Alert className="mt-6">
-          Chegamos a 9 mil usuários! Obrigado por usar o correio anônimo!
-        </Alert>
+            <Alert className="mt-4">🎉 Obrigado pelos 9 mil usuários!</Alert>
+          </div>
 
-        <Form
-          className="flex flex-col"
-          ref={formRef}
-          onSubmit={handleFormSubmit}
-        >
-          <div className="flex">
-            <label
-              htmlFor="user"
-              className="
+          <div className="mt-8 lg:mt-0">
+            <Form
+              className="flex flex-col mt-4"
+              ref={formRef}
+              onSubmit={handleFormSubmit}
+            >
+              <div className="flex">
+                <label
+                  htmlFor="user"
+                  className="
                   flex-shrink
                   font-bold
                   dark:text-gray-300 text-gray-700 text-2xl
                   inline-block
                 "
-            >
-              Enviar para @
-            </label>
-            <Input
-              name="user"
-              type="text"
-              placeholder="alguemespecial"
-              className="w-6/12 sm:w-7/12 appearance-none outline-none text-2xl dark:bg-gray-900"
-            />
-          </div>
-          <Textarea
-            autoFocus
-            name="message"
-            placeholder="Deixe seu recado anônimo!"
-            className="
+                >
+                  Enviar para @
+                </label>
+                <Input
+                  name="user"
+                  type="text"
+                  placeholder="alguemespecial"
+                  className="w-6/12 sm:w-7/12 appearance-none outline-none text-2xl dark:bg-gray-900"
+                />
+              </div>
+              <Textarea
+                autoFocus
+                name="message"
+                placeholder="Deixe seu recado anônimo!"
+                className="
                 inline-block
                 resize-none
                 appearance-none
@@ -116,25 +121,44 @@ const Home: NextPage = () => {
                 py-3
                 h-36
               "
-          ></Textarea>
+              ></Textarea>
 
-          <div className="mt-2">Mande mensagens com cores diferentes!</div>
-          <Radio
-            name="color"
-            options={colorOptions}
-            inputClassName={`mr-2`}
-            labelClassName={`mr-2`}
-            onChange={onChangeRadio}
-          />
+              <div className="mt-2">Mande mensagens com cores diferentes!</div>
+              <Radio
+                name="color"
+                options={colorOptions}
+                inputClassName={`mr-2`}
+                labelClassName={`mr-2`}
+                onChange={onChangeRadio}
+              />
 
-          <button
-            className="block mt-2 outline dark:text-gray-300 text-gray-700 underline"
-            onClick={handleSignIn}
-          >
-            clique aqui para checar suas mensagens com o twitter!
-          </button>
-        </Form>
-        <div className="mt-16">
+              <button
+                className={`
+                ${bg}
+                font-semibold
+                text-xl
+                py-4
+                text-white
+                rounded-sm
+                transition-colors
+                hover:brightness-110
+                mt-4
+              `}
+              >
+                enviar! 📨
+              </button>
+
+              <button
+                className="block mt-4 outline-none dark:text-gray-300 text-gray-700 underline"
+                onClick={handleSignIn}
+              >
+                clique aqui para checar suas mensagens com o twitter!
+              </button>
+            </Form>
+          </div>
+        </div>
+
+        <div className="mt-32 bg-gray-900">
           <h2 className="text-3xl md:text-5xl dark:text-gray-300 text-gray-700 font-bold text-center">
             como funciona?
           </h2>
@@ -164,7 +188,7 @@ const Home: NextPage = () => {
                 w-28
                 h-28
                 sm:w-48 sm:h-48
-                bg-blue-200
+                bg-purple-200
                 transform
                 -rotate-6
                 hover:-rotate-3 hover:scale-105
@@ -183,7 +207,7 @@ const Home: NextPage = () => {
                 w-28
                 h-28
                 sm:w-48 sm:h-48
-                bg-blue-200
+                bg-pink-200
                 transform
                 rotate-6
                 -translate-y-10
@@ -203,7 +227,7 @@ const Home: NextPage = () => {
                 w-28
                 h-28
                 sm:w-48 sm:h-48
-                bg-blue-200
+                bg-green-200
                 transform
                 -rotate-6
                 hover:-rotate-3 hover:scale-105
