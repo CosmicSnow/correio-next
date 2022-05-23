@@ -35,6 +35,8 @@ export default async function handler(
         );
 
         if (status == 200) {
+          if (data == null) return res.status(200).json([]);
+
           const messages = Object.entries(data).map((message) => {
             const key = message[0];
             const data = message[1] as MessageDataInterface;
@@ -43,7 +45,8 @@ export default async function handler(
               ...data,
             };
           });
-          return res.status(200).json(messages);
+
+          return res.status(200).json(messages || []);
         }
 
         return res.status(status).json(false);

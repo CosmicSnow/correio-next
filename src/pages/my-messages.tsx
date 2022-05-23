@@ -18,6 +18,7 @@ import api from "services/api";
 const MyMessages: NextPage = () => {
   const { user, signOut } = useAuth();
   const [messages, setMessages] = useState<MessageDataInterface[]>([]);
+  const [loading, setLoading] = useState(true);
   const [safeFilter, setSafeFilter] = useState(true);
   const router = useRouter();
 
@@ -36,6 +37,7 @@ const MyMessages: NextPage = () => {
       });
 
       if (status == 200) setMessages(data.reverse());
+      setLoading(false);
     }
 
     loadMessages();
@@ -183,35 +185,82 @@ const MyMessages: NextPage = () => {
             )}
 
             <Alert className="mt-4" full>
-              <span className="font-bold">Novidade! 🚀</span> Agora você tem o
+              <span className="font-bold">Novidade! 🚀</span>{" "}
               <a
-                className="font-bold ml-1 underline"
-                href="https://twitter.com/krteazy/status/1466034487922470917"
                 target="_blank"
+                className="font-semibold underline pointer"
+                href="https://twitter.com/o_correio_anon"
                 rel="noreferrer"
               >
-                Safe Filter
+                Siga nosso perfil no Twitter @o_correio_anon para ficar sabendo
+                de atualizações!
               </a>{" "}
-              habilitado por padrão na sua conta. Sua experiência mais segura :)
             </Alert>
 
-            {messages.length > 0 ? (
-              <div
-                id="message-container"
-                className="mt-8 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-y-4"
-              >
-                {messages.map((message) => (
-                  <button
-                    className="appearance-none text-left"
-                    key={message.id}
+            {!loading ? (
+              messages.length > 0 ? (
+                <div
+                  id="message-container"
+                  className="mt-8 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-y-4"
+                >
+                  {messages.map((message) => (
+                    <button
+                      className="appearance-none text-left"
+                      key={message.id}
+                    >
+                      <Message
+                        content={message.content}
+                        bgColor={message.color}
+                      />
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full h-72 flex items-center justify-center flex-col">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 dark:text-gray-300 text-gray-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
                   >
-                    <Message
-                      content={message.content}
-                      bgColor={message.color}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
+                  </svg>
+                  <span className="dark:text-gray-300 text-gray-700 font-bold text-3xl">
+                    Tudo parece vazio :(
+                  </span>
+                  <span className="mt-2 dark:text-gray-300 text-gray-700 text-xl px-8">
+                    Você ainda não recebeu nenhuma mensagem.
+                  </span>
+                  <button
+                    className="py-1 px-2 mt-4 sm:py-2 sm:px-4 bg-blue-400 text-white font-medium flex items-center"
+                    onClick={handleShare}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                      />
+                    </svg>
+                    <span className="ml-2 hidden sm:inline">
+                      compartilhar link
+                    </span>
                   </button>
-                ))}
-              </div>
+                </div>
+              )
             ) : (
               <div className="w-full h-64 flex items-center justify-center flex-col">
                 <svg

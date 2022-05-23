@@ -103,7 +103,14 @@ const Home: NextPage = () => {
               </p>
 
               <Alert className="mt-4" full={false}>
-                🎉 Obrigado pelos 9 mil usuários!
+                <a
+                  target="_blank"
+                  className="font-semibold underline pointer"
+                  href="https://twitter.com/o_correio_anon"
+                  rel="noreferrer"
+                >
+                  Siga nosso perfil no Twitter! @o_correio_anon
+                </a>
               </Alert>
             </div>
 
