@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const isDev = !process.env.AWS_REGION;
+const isDev = process.env.NODE_ENV === "development";
 
 export default axios.create({
   baseURL: isDev
