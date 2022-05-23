@@ -25,11 +25,14 @@ export default async function handler(
   try {
     const { user, content, color } = req.body as RequestProps;
 
+    const checkRegex = /^[a-zA-Z0-9_]{4,50}$/m;
+
     const conditionals = [
       colorEnum[color] != undefined,
       user,
       user.length >= 4,
       !forbiddenUsernames.includes(user),
+      checkRegex.test(user),
       content.length > 3,
       user.length < 50,
       content.length < 800,
