@@ -12,6 +12,7 @@ export default async function handler(
   try {
     const username = req.query?.username as string;
     const authorization = req.headers.authorization;
+    console.log(req.headers);
 
     const conditionals = [
       authorization,
