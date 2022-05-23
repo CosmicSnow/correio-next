@@ -30,8 +30,8 @@ const MyMessages: NextPage = () => {
       console.info("Fetching messages...");
 
       const { data, status } = await api.get(`messages/${user?.username}`, {
-        headers: {
-          Authorization: `Bearer ${user?.accessToken}`,
+        params: {
+          auth: `${user?.accessToken}`,
         },
       });
 
