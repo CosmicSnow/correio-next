@@ -14,7 +14,7 @@ interface FirebaseResponse {
 
 interface RequestProps {
   user: string;
-  message: string;
+  content: string;
   color: colorEnum;
 }
 
@@ -23,16 +23,16 @@ export default async function handler(
   res: NextApiResponse<boolean>
 ) {
   try {
-    const { user, message, color } = req.body as RequestProps;
+    const { user, content, color } = req.body as RequestProps;
 
     const conditionals = [
       colorEnum[color] != undefined,
       user,
       user.length >= 4,
       !forbiddenUsernames.includes(user),
-      message.length > 3,
+      content.length > 3,
       user.length < 50,
-      message.length < 800,
+      content.length < 800,
     ];
 
     const twitterId = await findTwitterIdByUsername(user);
@@ -40,13 +40,13 @@ export default async function handler(
     if (conditionals.every(Boolean) && twitterId) {
       const date = new Date().toISOString();
 
-      const filteredMessage = filter(message);
+      const filteredContent = filter(content);
 
       const { data } = await axios.post<FirebaseResponse>(
         `${process.env?.DATABASE_URL}/messages/${twitterId}.json`,
         {
           date,
-          content: filteredMessage,
+          content: filteredContent,
           color,
         }
       );

@@ -1,5 +1,6 @@
 export interface MessageDataInterface {
   user: string;
-  message: string;
+  content: string;
   color: string;
+  id?: string;
 }

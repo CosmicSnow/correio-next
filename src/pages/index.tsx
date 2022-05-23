@@ -1,8 +1,8 @@
 import React, { useRef, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 
-import type { NextPage } from "next";
-import { FormHandles, SubmitHandler } from "@unform/core";
+import type { NextPage, GetStaticProps } from "next";
+import { FormHandles } from "@unform/core";
 import { MessageDataInterface } from "types/MessageData";
 
 import { Form } from "@unform/web";
@@ -19,10 +19,10 @@ import { colorOptions } from "utils/colors";
 import api from "services/api";
 
 const Home: NextPage = () => {
-  const router = useRouter();
   const { user, signInWithTwitter } = useAuth();
-  const formRef = useRef<FormHandles>(null);
   const [bg, setBg] = useState("bg-blue-400");
+  const formRef = useRef<FormHandles>(null);
+  const router = useRouter();
 
   const handleSignIn = async () => {
     if (!user) {
@@ -46,19 +46,19 @@ const Home: NextPage = () => {
       alert("Preencha o campo nome corretamente!");
       return;
     }
-    if (!data.message || data.message.length < 3) {
+    if (!data.content || data.content.length < 3) {
       alert("Escreva uma mensagem com no mínimo 3 caracteres!");
       return;
     }
 
-    if (data.user.length > 50 || data.message.length > 800) {
+    if (data.user.length > 50 || data.content.length > 800) {
       alert("Sua mensagem foi rejeitada!");
       return;
     }
 
     const request = await api.post("sendMessage", {
       user: data.user,
-      message: data.message,
+      content: data.content,
       color: bg,
     });
 
@@ -89,7 +89,9 @@ const Home: NextPage = () => {
               já ajudamos mais de 9 mil pessoas a enviar cartas de carinho!
             </p>
 
-            <Alert className="mt-4">🎉 Obrigado pelos 9 mil usuários!</Alert>
+            <Alert className="mt-4" full={false}>
+              🎉 Obrigado pelos 9 mil usuários!
+            </Alert>
           </div>
 
           <div className="mt-8 lg:mt-0">
@@ -119,7 +121,7 @@ const Home: NextPage = () => {
               </div>
               <Textarea
                 autoFocus
-                name="message"
+                name="content"
                 placeholder="Deixe seu recado anônimo!"
                 className="
                 inline-block
@@ -338,3 +340,9 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
+};

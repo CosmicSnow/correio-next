@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
 import { auth, firebase } from "../services/firebase";
 
@@ -28,8 +28,6 @@ const AuthContext = createContext({} as AuthContextProps);
 const AuthContextProvider = (props: AuthContextProviderProps) => {
   const [user, setUser] = useState<User>();
 
-  useEffect(() => {}, []);
-
   async function signInWithTwitter() {
     const provider = new firebase.auth.TwitterAuthProvider();
 
@@ -49,6 +47,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
 
   async function signOut() {
     await auth.signOut();
+    setUser(undefined);
   }
 
   return (

@@ -11,7 +11,7 @@ const Alert: React.FC<AlertProps> = ({ children, className, full = true }) => {
     <div
       className={`
         border bg-yellow-100 border-yellow-400 text-yellow-600 py-4 px-4 rounded-md w-full ${
-          full && "lg:w-fit"
+          !full && "lg:w-fit"
         } ${className}
         `}
     >
