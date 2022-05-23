@@ -51,6 +51,7 @@ export default async function handler(
       }
     }
 
+    console.log(conditionals);
     return res.status(400).json(false);
   } catch (e) {
     console.error(e);
