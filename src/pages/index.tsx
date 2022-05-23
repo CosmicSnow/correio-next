@@ -19,6 +19,7 @@ import { Textarea } from "components/Textarea";
 import { colorOptions } from "utils/colors";
 
 import api from "services/api";
+import { AxiosError } from "axios";
 
 const Home: NextPage = () => {
   const { user, signInWithTwitter } = useAuth();
@@ -51,32 +52,36 @@ const Home: NextPage = () => {
   );
 
   const handleFormSubmit = async (data: MessageDataInterface) => {
-    setLoading(true);
-    if (!data.user) {
-      alert("Preencha o campo nome corretamente!");
-      return setLoading(false);
+    try {
+      setLoading(true);
+      if (!data.user || data.user.length < 4) {
+        throw new Error("Preencha o campo nome corretamente!");
+      }
+      if (!data.content || data.content.length < 3) {
+        throw new Error("Escreva uma mensagem com no mínimo 3 caracteres!");
+      }
+
+      if (data.user.length > 50 || data.content.length > 800) {
+        throw new Error("Sua mensagem foi rejeitada!");
+      }
+
+      const request = await api.post("sendMessage", {
+        user: data.user,
+        content: data.content,
+        color: colorOptions.find((color) => color.btnColor === bg)?.value,
+      });
+
+      if (request.status == 200) alert("Mensagem enviada com sucesso! ❤");
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        alert(
+          "Erro ao enviar mensagem! Verifique se o nome do usuário está escrito corretamente."
+        );
+      } else {
+        alert(e);
+      }
     }
-    if (!data.content || data.content.length < 3) {
-      alert("Escreva uma mensagem com no mínimo 3 caracteres!");
-      return setLoading(false);
-    }
-
-    if (data.user.length > 50 || data.content.length > 800) {
-      alert("Sua mensagem foi rejeitada!");
-      return setLoading(false);
-    }
-
-    const request = await api.post("sendMessage", {
-      user: data.user,
-      content: data.content,
-      color: colorOptions.find((color) => color.btnColor === bg)?.value,
-    });
-
-    if (request.status == 200) {
-      alert("Mensagem enviada com sucesso! ❤");
-    } else alert("Houve um erro. Confira os dados enviados.");
-
-    return setLoading(false);
+    setLoading(false);
   };
 
   const handlePix = useCallback(async () => {
