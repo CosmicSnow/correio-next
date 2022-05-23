@@ -23,14 +23,13 @@ export default async function handler(
 
     if (authorization && conditionals.every(Boolean)) {
       const twitterId = await findTwitterIdByUsername(username);
-      const [_, accessToken] = authorization.split(" ");
 
       if (twitterId) {
         const { data, status } = await axios.get(
           `${process.env?.DATABASE_URL}/messages/${twitterId}.json`,
           {
             params: {
-              auth: accessToken,
+              auth: authorization,
             },
           }
         );
