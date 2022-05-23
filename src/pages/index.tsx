@@ -188,7 +188,7 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <div className="mt-32 bg-gray-900">
+          <div className="mt-32">
             <h2 className="text-3xl md:text-5xl dark:text-gray-300 text-gray-700 font-bold text-center">
               como funciona?
             </h2>
