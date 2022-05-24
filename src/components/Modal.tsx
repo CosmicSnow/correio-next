@@ -10,6 +10,44 @@ interface ModalProps {
   list: MessageDataInterface[];
 }
 
+interface ControllerArrowProps {
+  children: React.ReactNode;
+  contentLength: number;
+  decrease?: boolean;
+}
+
+const DumbView = () => {
+  return <div className="h-16 w-16 p-2"></div>;
+};
+
+const ControllerArrows: React.FC<ControllerArrowProps> = ({
+  children,
+  contentLength,
+  decrease = false,
+}) => {
+  const { setIndex, contentIndex } = useModal();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (decrease && contentIndex > 0) {
+      setIndex(contentIndex - 1);
+      return;
+    }
+
+    if (contentIndex + 1 < contentLength) {
+      setIndex(contentIndex + 1);
+      return;
+    }
+  };
+
+  return (
+    <div className="cursor-pointer p-2" onClick={handleClick}>
+      {children}
+    </div>
+  );
+};
+
 const Modal: React.FC<ModalProps> = ({ list }) => {
   const { user } = useAuth();
   const { isVisible, toggle, contentIndex } = useModal();
@@ -20,9 +58,29 @@ const Modal: React.FC<ModalProps> = ({ list }) => {
     <>
       {isVisible && (
         <div
-          className="h-screen bg-black text-white bg-opacity-50 w-full absolute z-50 flex items-center justify-center flex-col"
+          className="h-screen bg-black text-white bg-opacity-50 w-full absolute z-50 flex items-center justify-center"
           onClick={toggle}
         >
+          {list[contentIndex - 1] ? (
+            <ControllerArrows contentLength={list.length} decrease>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={3}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </ControllerArrows>
+          ) : (
+            <DumbView />
+          )}
           <div
             className="flex items-center flex-col"
             onClick={(e) => e.stopPropagation()}
@@ -104,6 +162,26 @@ const Modal: React.FC<ModalProps> = ({ list }) => {
               </a>
             </div>
           </div>
+          {list[contentIndex + 1] ? (
+            <ControllerArrows contentLength={list.length}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={3}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </ControllerArrows>
+          ) : (
+            <DumbView />
+          )}
         </div>
       )}
     </>
