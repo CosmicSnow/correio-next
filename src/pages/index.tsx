@@ -18,8 +18,7 @@ import { Textarea } from "components/Textarea";
 
 import { colorOptions } from "utils/colors";
 
-import api from "services/api";
-import { AxiosError } from "axios";
+import { sendMessage } from "utils/sendMessage";
 
 const Home: NextPage = () => {
   const { user, signInWithTwitter } = useAuth();
@@ -52,35 +51,16 @@ const Home: NextPage = () => {
   );
 
   const handleFormSubmit = async (data: MessageDataInterface) => {
-    try {
-      setLoading(true);
-      if (!data.user || data.user.length < 4) {
-        throw new Error("Preencha o campo nome corretamente!");
-      }
-      if (!data.content || data.content.length < 3) {
-        throw new Error("Escreva uma mensagem com no mínimo 3 caracteres!");
-      }
+    setLoading(true);
 
-      if (data.user.length > 50 || data.content.length > 800) {
-        throw new Error("Sua mensagem foi rejeitada!");
-      }
+    await sendMessage({
+      ...data,
+      color: colorOptions.find((color) => color.btnColor === bg)
+        ?.value as string,
+    });
 
-      const request = await api.post("sendMessage", {
-        user: data.user,
-        content: data.content,
-        color: colorOptions.find((color) => color.btnColor === bg)?.value,
-      });
+    formRef.current?.clearField("content");
 
-      if (request.status == 200) alert("Mensagem enviada com sucesso! ❤");
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        alert(
-          "Erro ao enviar mensagem! Verifique se o nome do usuário está escrito corretamente."
-        );
-      } else {
-        alert(e);
-      }
-    }
     setLoading(false);
   };
 

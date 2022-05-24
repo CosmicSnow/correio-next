@@ -1,11 +1,21 @@
 import React from "react";
 
+import { useModal } from "hooks/useModal";
+
 interface MessageProps {
+  index: number;
   content: string;
   bgColor: string;
 }
 
-const Message: React.FC<MessageProps> = ({ content, bgColor }) => {
+const Message: React.FC<MessageProps> = ({ index, content, bgColor }) => {
+  const { toggle, setIndex } = useModal();
+
+  const handleClick = () => {
+    setIndex(index);
+    toggle();
+  };
+
   return (
     <>
       <div
@@ -27,6 +37,7 @@ const Message: React.FC<MessageProps> = ({ content, bgColor }) => {
         md:text-base
         cursor-pointer
       `}
+        onClick={handleClick}
       >
         <div className="max-w-full max-h-full overflow-ellipsis overflow-hidden">
           {content}

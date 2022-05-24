@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { MessageDataInterface } from "types/MessageData";
 
 import { SEO } from "components/SEO";
+import { Modal } from "components/Modal";
 import { Alert } from "components/Alert";
 import { Message } from "components/Message";
 
@@ -30,13 +31,15 @@ const MyMessages: NextPage = () => {
     async function loadMessages() {
       console.info("Fetching messages...");
 
-      const { data, status } = await api.get(`messages/${user?.username}`, {
-        params: {
-          auth: `${user?.accessToken}`,
-        },
-      });
+      if (user?.accessToken) {
+        const { data, status } = await api.get(`messages/${user?.username}`, {
+          params: {
+            auth: `${user.accessToken}`,
+          },
+        });
 
-      if (status == 200) setMessages(data.reverse());
+        if (status == 200) setMessages(data.reverse());
+      }
       setLoading(false);
     }
 
@@ -47,7 +50,7 @@ const MyMessages: NextPage = () => {
     return () => {
       window.removeEventListener("focus", loadMessages);
     };
-  }, []);
+  }, [user]);
 
   async function handleSignOut() {
     await signOut();
@@ -80,7 +83,8 @@ const MyMessages: NextPage = () => {
   return (
     <>
       <SEO />
-      <div className={`min-h-screen dark:bg-gray-900 pb-32`}>
+      {messages && <Modal list={messages} />}
+      <div className="min-h-screen dark:bg-gray-900 pb-32 overflow-y-hidden">
         <div className="max-w-screen-xl mx-auto px-8">
           <div className="w-full flex items-center justify-between h-20">
             <Link href="/" passHref>
@@ -184,7 +188,7 @@ const MyMessages: NextPage = () => {
               </h1>
             )}
 
-            <Alert className="mt-4" full>
+            <Alert className="mt-8" full>
               <span className="font-bold">Novidade! 🚀</span>{" "}
               <a
                 target="_blank"
@@ -203,12 +207,13 @@ const MyMessages: NextPage = () => {
                   id="message-container"
                   className="mt-8 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-y-4"
                 >
-                  {messages.map((message) => (
+                  {messages.map((message, index) => (
                     <button
                       className="appearance-none text-left"
                       key={message.id}
                     >
                       <Message
+                        index={index}
                         content={message.content}
                         bgColor={message.color}
                       />
