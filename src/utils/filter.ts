@@ -43,6 +43,7 @@ const forbiddenWords = [
   "preto",
   "preta",
   "verme",
+  "卐",
 ];
 
 const forbiddenPhrases = [
