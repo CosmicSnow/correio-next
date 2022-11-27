@@ -41,7 +41,8 @@ const Home: NextPage = () => {
                 Cuidar de um projeto que lida com mensagens anônimas é uma faca
                 de dois gumes, de um lado, você tem que garantir anônimato e
                 pelo outro você precisa garantir que pessoas mal intencionadas
-                abusem desse anonimato para causar mal a outras pessoas.
+                não consigam abusar desse anonimato para causar mal a outras
+                pessoas.
               </p>
               <p className="mt-2 sm:mt-6 max-w-2xl text-justify">
                 Como desenvolvedor único do projeto, não tenho mais tempo para
@@ -57,7 +58,13 @@ const Home: NextPage = () => {
               <p className="mt-2 sm:mt-6 max-w-2xl text-justify">
                 Foi divertido enquanto durou, mas não tenho tempo para dar
                 continuidade :) Além disso, estarei liberando o código fonte do
-                site no GitHub.
+                site no GitHub.{" "}
+                <a
+                  className="text-blue-400 underline"
+                  href="https://github.com/guilherssousa/correio-next"
+                >
+                  correio-next
+                </a>
               </p>
               <button
                 className="mx-auto block mt-4 outline-none text-white bg-blue-500 px-5 py-3"
